@@ -1,0 +1,129 @@
+<html>
+    <head>
+
+        <script src=https://code.jquery.com/jquery-3.3.1.min.js crossorigin="anonymous"></script>
+        <script> 
+
+        let username= "Username";
+        let max_length=30;
+
+        function createPost(words){
+            //add post
+            let postHtml = `
+                <div class="tweet-box">
+                    <strong>${username}</strong> ${words}
+                 </div>
+            `;
+            $("#posts_wall").prepend(postHtml);
+        }
+
+        function updateCount() {
+            let content = $("#userInputID").val();
+            let remaining = max_length - content.length;
+
+            $("#count").text(remaining);
+            
+            //flips to invalid css if less than 0
+            if (remaining < 0) {
+                $("#count").addClass("invalid").removeClass("valid");
+            } else {
+                $("#count").addClass("valid").removeClass("invalid");
+            }
+
+            //disable button when too much
+            if (content.trim().length === 0 || content.length > max_length) {
+                $("#poster").prop("disabled", true);
+            } else {
+                $("#poster").prop("disabled", false);
+            }
+
+        }
+    
+        $(document).ready(function(){
+            //while typing update counter
+            $("#userInputID").on("input", function() {
+                updateCount();
+            });
+            
+            //if enter key (13) is pressed
+            $("#userInputID").keypress(function(event) {
+                //edge case for space inputs
+                if (event.which === 13 && ($("#userInputID").val().trim()).length!=0) {
+                    //edge case for long inputs
+                    if (!$("#poster").prop("disabled")) {
+                        event.preventDefault();
+                        $("#poster").click();
+                        $("#userInputID").focus();
+                    }
+                }
+            });
+
+            //post when button clicked
+            $("#poster").click(function(){ 
+                let words= $("#userInputID").val();
+                createPost(words)
+
+                //clear input and return curser to textbox
+                $("#userInputID").val("");
+                updateCount();
+                $("#userInputID").focus();
+            })
+        })
+
+
+        </script>
+        <style>
+            .container{
+                font-family: Arial, Helvetica, sans-serif;
+    
+            }
+            .valid{
+                color:silver;
+            }
+            .tweet-box {
+                border: 1px solid #000000;
+                text-align: left;
+                padding: 3px;
+                max-width: 330px;
+            }
+            #userInputID{
+                width: 350px;
+                padding: 3px;
+            }
+            .valid {
+            color: lightgrey;
+            }
+            .invalid {
+                color: red;
+                font-weight: bold;
+            }
+            .count_and_button {
+                display: flex;
+                align-items: center; 
+            }
+            
+            button {
+                border-radius: 0;
+                padding: 5px;
+                font-size: medium;
+            } 
+            #count{
+                padding-right: 5px;
+            }
+        </style>
+
+    </head>
+    <body>
+        <div class="container">
+            Write a tweet<br>
+            <input type="text" id="userInputID"><br>
+            <div class="count_and_button">
+                <div id="count" class="valid">30</div>
+                <button id="poster" class="btn btn-primary">Post Tweet</button>
+            </div>
+            <br><br><br>POSTS
+            <div id="posts_wall"></div>
+        </div>
+
+    </body>
+</html>
