@@ -11,3 +11,7 @@ Front-end clone of tinder user interface using html/css.
 ### twitter-home.html
 Recreation of Twitter home layout with html/css using Bootstrap 5.0.2 to fit content to medium and extra-small screens. 
 
+## Homework 3:
+### tweet_post.html
+Website created in HTML, CSS, JavaScript and JQuery where a user can write a tweet and see it appear below in a list of their own tweets.
+
