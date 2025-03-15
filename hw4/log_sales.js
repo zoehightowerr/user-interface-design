@@ -67,32 +67,35 @@ function update_list(sales){
     });
 }
 
-function check_blanks(current_client, current_ream){
-    let valid= true;
+function check_blanks(current_client, current_ream) {
+    let valid = true;
+    let firstErrorField = null;
     $(".error_message").remove();
 
-   
     if (current_client.trim().length == 0) {
-        $("#userInputID_Client").focus();
         $("#userInputID_Client").after("<span class='error_message'>Required</span>");
+        if (!firstErrorField) firstErrorField = "#userInputID_Client";
         valid = false;
     }
 
     if (current_ream.trim().length == 0) {
-        if(valid) {
-            $("#userInputID_Reams").focus()
-        }
         $("#userInputID_Reams").after("<span class='error_message'>Required</span>");
+        if (!firstErrorField) firstErrorField = "#userInputID_Reams";
+        valid = false;
+    } 
+    else if (isNaN(Number(current_ream))) {
+        $("#userInputID_Reams").after("<span class='error_message'>Must be a number</span>");
+        if (!firstErrorField) firstErrorField = "#userInputID_Reams";
         valid = false;
     }
-    else if (isNaN(Number(current_ream))) {
-        $("#userInputID_Reams").focus();
-        $("#userInputID_Reams").after("<span class='error_message'>Must be a number</span>");
-        valid = false;
+
+    if (firstErrorField) {
+        $(firstErrorField).focus(); 
     }
 
     return valid;
 }
+
 
 
 $(function() {
@@ -101,13 +104,19 @@ $(function() {
     });
   
     $("#droppable").droppable({
-      drop: function(event, ui) {
-        $(this)
-          .addClass("ui-state-highlight")
-          let index = ui.draggable.data("index");
-          sales.splice(index, 1);  
-          update_list(sales);
-      }
+        over: function(event, ui) {
+            $(this).addClass("ui-state-highlight");
+        },
+        out: function(event, ui) {
+            $(this).removeClass("ui-state-highlight");
+        },
+        drop: function(event, ui) {
+            $(this)
+            .addClass("ui-state-highlight")
+            let index = ui.draggable.data("index");
+            sales.splice(index, 1);  
+            update_list(sales);
+        }
     });
   });
 
@@ -143,4 +152,3 @@ $(document).ready(function(){
         update_list(sales);
     });
 })
-    
