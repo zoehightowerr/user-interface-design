@@ -481,14 +481,6 @@ def genre_search(query):
         return render_template('index.html', query=query, results=results)
     else:
         return render_template('index.html', query=query, message="No bands found for this genre.")
-
-@app.route('/add')
-def add_entry():
-    render_template('add.html')
-
-@app.route('/edit/<id>')
-def edit_entry(id):
-    render_template('edit.html')
     
 if __name__ == '__main__':
    app.run(debug = True, port=5001)
