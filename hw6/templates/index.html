@@ -1,0 +1,38 @@
+<!--ZOE HIGHTOWER-->
+{% extends "layout.html" %}
+{% block content %}
+<html lang="en">
+<head>
+    <script src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+    rel="stylesheet" crossorigin="anonymous">
+    <script>
+        var results = {{ results | tojson }};
+        var query = {{ query | tojson }};
+    </script>
+    
+    
+</head>
+<body>
+    <h1>Search Results for "{{ query }}"</h1>
+    <div class="results">
+        {% if results %}
+            {% for band in results %}
+                <div class="band">
+                    <a href="/view/{{ band['id'] }}" class="band-name">
+                        <h2>{{ band["name"] }}</h2>
+                    </a>
+                    <img src="{{ band["image"] }}"image" class="band-image" style="max-width: 200px;">
+                    <p>{{ band["description"][:100] }}...</p> 
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No results found</p>
+        {% endif %}
+    </div>
+</body>
+</html>
+{% endblock %}
